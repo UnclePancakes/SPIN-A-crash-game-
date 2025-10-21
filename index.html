@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>SpinOut Prototype - Smooth Retro Digital</title>
 <style>
   /* Font Import: Inter for a clean, modern digital look (MUST be first in the stylesheet) */
@@ -32,13 +32,16 @@
   }
   
   .wrap {
-    width: 100%;
-    max-width: 980px;
+    /* Original: width: 980px; */
+    width: 100%; /* Use full width on all devices */
+    /* Original: max-width: 96%; */
+    max-width: 980px; /* Keep a max-width for desktop */
     display: grid;
-    grid-template-columns: 1fr; 
-    gap: 15px;
-    padding: 10px; 
-    box-sizing: border-box; 
+    /* Original: grid-template-columns: 640px 1fr; */
+    grid-template-columns: 1fr; /* Default to single column (mobile-first approach) */
+    gap: 15px; /* Slightly reduced gap */
+    padding: 10px; /* Add some padding on the edges */
+    box-sizing: border-box; /* Include padding in element's total width/height */
   }
 
   /* --- Digital Panel Styling --- */
@@ -291,6 +294,97 @@
   .rules-panel ol{ margin:0; padding-left:18px; }
   .rules-panel li{ margin:6px 0; }
   .rules-panel .muted{ color: var(--muted-color); font-size:12px; display:block; margin-top:4px; }
+  @media (max-width: 679px) {
+    /* Make the canvas shorter on mobile for better fit */
+    canvas {
+      height: 200px; /* Reduced canvas height */
+    }
+
+    /* Adjust scanlines for the new canvas height */
+    .scanlines::before {
+        top: 2px; left: 2px; right: 2px; 
+        /* The canvas is inside a stage with 18px padding, which we remove here, so 2px margin */
+        bottom: 50px; /* Adjusting for the status display below the canvas */
+        opacity: 0.4;
+    }
+    
+    .stage {
+        padding: 2px; /* Less padding to maximize canvas space */
+    }
+
+    /* Make display rows flexible and wrap on small screens */
+    .row {
+        flex-wrap: wrap; 
+        gap: 8px;
+    }
+
+    /* Make input elements full width when wrapping */
+    input[type=number], input[type=text] {
+        width: 100%;
+        box-sizing: border-box; /* Crucial for full-width inputs */
+        font-size: 16px; /* Larger font size for touch input */
+    }
+
+    /* Make buttons full width when wrapping */
+    button {
+        flex-grow: 1; /* Allow buttons to expand */
+        min-width: 120px; /* Minimum width for buttons */
+        font-size: 14px;
+    }
+
+    /* Reduce heights of non-critical visual elements */
+    .rules-panel {
+      height: 160px; /* Shorter rules panel */
+      font-size: 12px;
+    }
+    
+    .leaderboard {
+      height: 120px; /* Shorter leaderboard */
+      font-size: 12px;
+    }
+    
+    .log {
+      height: 80px; /* Shorter log */
+      font-size: 11px;
+    }
+    
+    /* Reorganize the auto-cashout row */
+    .row > div:nth-child(2) {
+      margin-left: auto; /* Push music controls to the right */
+    }
+    
+    /* Adjust multiplier size to fit better */
+    .big-mult {
+      font-size: 36px;
+    }
+  }@media (min-width: 680px) {
+    body {
+      /* Optional: slightly smaller font on desktop */
+      font-size: 13px;
+    }
+    
+    .wrap {
+      width: 980px; /* Restore original fixed width for desktop */
+      max-width: 96%;
+      /* Restore original two-column layout for desktop */
+      grid-template-columns: 640px 1fr; 
+      gap: 20px;
+      padding: 0;
+    }
+    
+    /* Ensure the stage and canvas get their full size back */
+    .stage {
+        padding: 18px; /* Original padding */
+    }
+    canvas {
+        height: 360px; /* Original height */
+    }
+    
+    /* Restore scanlines position for desktop */
+    .scanlines::before {
+        top: 20px; left: 20px; right: 20px; bottom: 106px; 
+    }
+  }
 </style>
 </head>
 <body>
@@ -1570,5 +1664,3 @@ function setupUIHandlers(){
 </script>
 </body>
 </html>
-
-
